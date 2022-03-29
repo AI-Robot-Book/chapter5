@@ -7,14 +7,13 @@ import cv2 # OpenCV library
 from cv_bridge import CvBridge # Package to convert between ROS and OpenCV Images
 
 
-class VideoSubscriber(Node):
+class DepthSubscriber(Node):
 
     def __init__(self):
-        super().__init__('video_subscriber')
+        super().__init__('depth_subscriber')
         self.subscription = self.create_subscription(
             Image,
-            '/image_raw', # webcam topic
-            # '/camera/color/image_raw', # realsense camera topic
+            '/camera/depth/image_rect_raw', # realsense camera topic
             self.listener_callback,
             qos_profile_sensor_data)
         self.subscription  # prevent unused variable warning
@@ -28,7 +27,7 @@ class VideoSubscriber(Node):
         self.get_logger().info('Receiving image')
         
         # Convert ROS Image message to OpenCV image
-        frame = self.br.imgmsg_to_cv2(data, "bgr8")
+        frame = self.br.imgmsg_to_cv2(data, "passthrough")
         
         # Display image
         cv2.imshow("camera", frame)
@@ -39,14 +38,14 @@ class VideoSubscriber(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    video_subscriber = VideoSubscriber()
+    depth_subscriber = DepthSubscriber()
 
-    rclpy.spin(video_subscriber)
+    rclpy.spin(depth_subscriber)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    video_subscriber.destroy_node()
+    depth_subscriber.destroy_node()
     rclpy.shutdown()
 
 

@@ -23,6 +23,7 @@ setup(
           'face_detection = opencv_ros2.face_detection:main',
           'qrcode_detector = opencv_ros2.qrcode_detector:main',
           'video_subscriber = opencv_ros2.video_subscriber:main',
+          'depth_subscriber = opencv_ros2.depth_subscriber:main',
           'canny_edge_detection = opencv_ros2.canny_edge_detection:main',
         ],
     },
