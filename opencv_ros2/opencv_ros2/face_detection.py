@@ -12,8 +12,6 @@ from cv_bridge import CvBridge # Package to convert between ROS and OpenCV Image
 import cv2 # OpenCV library
 
 # Load the cascade
-# face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-# eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
 
@@ -38,6 +36,8 @@ class FaceDetection(Node):
       self.listener_callback, 
       qos_profile_sensor_data)
     self.subscription # prevent unused variable warning
+
+    self.publisher = self.create_publisher(Image, 'face_detection_result', 10)
 
     # Used to convert between ROS and OpenCV images
     self.br = CvBridge()
@@ -67,6 +67,10 @@ class FaceDetection(Node):
         for (ex,ey,ew,eh) in eyes:
             cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
     
+    # Publish the result in ROS
+    face_detection_result = self.br.cv2_to_imgmsg(current_frame, "bgr8")
+    self.publisher.publish(face_detection_result)
+
     # Display image
     cv2.imshow("Camera", current_frame)
     
