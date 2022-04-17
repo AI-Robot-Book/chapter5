@@ -14,7 +14,7 @@ class VideoSubscriber(Node):
         self.subscription = self.create_subscription(
             Image,
             '/image_raw', # webcam topic
-            # '/camera/color/image_raw', # realsense camera topic
+            #'/camera/color/image_raw', # realsense camera topic
             self.listener_callback,
             qos_profile_sensor_data)
         self.subscription  # prevent unused variable warning

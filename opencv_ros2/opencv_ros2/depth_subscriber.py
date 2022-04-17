@@ -13,7 +13,7 @@ class DepthSubscriber(Node):
         super().__init__('depth_subscriber')
         self.subscription = self.create_subscription(
             Image,
-            '/camera/depth/image_rect_raw', # realsense camera topic
+            '/camera/depth/image_rect_raw', # realsense depth topic
             self.listener_callback,
             qos_profile_sensor_data)
         self.subscription  # prevent unused variable warning
