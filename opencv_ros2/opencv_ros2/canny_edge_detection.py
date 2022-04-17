@@ -19,6 +19,8 @@ class CannyEdgeDetection(Node):
             qos_profile_sensor_data)
         self.subscription  # prevent unused variable warning
         
+        self.publisher = self.create_publisher(Image, 'edges_result', 10)
+
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()
 
@@ -33,7 +35,11 @@ class CannyEdgeDetection(Node):
         
         # Apply Canny Edge Detection
         edges = cv2.Canny(frame_grayscale,100,200)
- 
+
+        # Publish the result in ROS
+        edges_result = self.br.cv2_to_imgmsg(edges, "passthrough")
+        self.publisher.publish(edges_result)
+
         # Display image
         cv2.imshow("Original Image", frame)
         cv2.imshow("Canny Edge Detection", edges)
