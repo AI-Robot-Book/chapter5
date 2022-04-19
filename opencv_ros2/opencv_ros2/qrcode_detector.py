@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
+from std_msgs.msg import String
 from sensor_msgs.msg import Image # Image is the message type
 
 import cv2 # OpenCV library
@@ -13,10 +14,13 @@ class QRCodeDetector(Node):
         super().__init__('qrcode_detector')
         self.subscription = self.create_subscription(
             Image,
-            '/image',
+            '/image_raw',
             self.listener_callback,
             qos_profile_sensor_data)
         self.subscription  # prevent unused variable warning
+
+        self.publisher_result = self.create_publisher(Image, 'qrcode_detector_result', 10)
+        self.publisher_data = self.create_publisher(String, 'qrcode_detector_data', 10)
         
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()
@@ -34,18 +38,25 @@ class QRCodeDetector(Node):
         detector = cv2.QRCodeDetector()
 
         # detect and decode
-        data, bbox, _ = detector.detectAndDecode(frame)
+        qrdata, bbox, _ = detector.detectAndDecode(frame)
 
         # if there is a QR code
         #if bbox is not None:
-        if data:
-            print("[+] QR Code detected, data:", data)
+        if qrdata:
+            print("[+] QR Code detected, data:", qrdata)
             # display the image with lines
             bbox = bbox[0]
             for i in range(len(bbox)):
                 pt1 = [int(val) for val in bbox[i]]
                 pt2 = [int(val) for val in bbox[(i + 1) % len(bbox)]]
-                cv2.line(frame, pt1, pt2, color=(255, 0, 0), thickness=3)
+                frame = cv2.line(frame, pt1, pt2, color=(255, 0, 0), thickness=3)
+        
+        # Publish the result in ROS
+        qrcode_detector_result = self.br.cv2_to_imgmsg(frame, "bgr8")
+        self.publisher_result.publish(qrcode_detector_result)
+        qrdata_string = String()
+        qrdata_string.data = qrdata
+        self.publisher_data.publish(qrdata_string)
         
         # display the result
         cv2.imshow("Camera", frame)
