@@ -26,7 +26,7 @@ class ObjectDetection(Node):
         super().__init__('object_detection')
 
         self.running = False  # 物体認識の処理のフラグ
-        self.target_name = 'cell phone'  # 探す物体名
+        self.target_name = 'cup'  # 探す物体名
         self.counter = 0  # 物体の検出回数を数えるカウンタ
         self.frame_id = 'target'  # ブロードキャストするtfの名前
         self.detector = Detector(**args)  # yolov5を使って物体検出を行うクラス
