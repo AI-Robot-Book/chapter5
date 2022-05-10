@@ -21,7 +21,9 @@ setup(
     entry_points={
         'console_scripts': [
           'face_detection = opencv_ros2.face_detection:main',
-          'smile_detection = opencv_ros2.smile_detection:main',
+          'quiz5_2_smile_detection = opencv_ros2.quiz5_2_smile_detection:main',
+          'challenge5_1_say_hello = opencv_ros2.challenge5_1_say_hello:main',
+          'challenge5_2_cup_direction = opencv_ros2.challenge5_2_cup_direction:main',
           'qrcode_detector = opencv_ros2.qrcode_detector:main',
           'video_subscriber = opencv_ros2.video_subscriber:main',
           'depth_subscriber = opencv_ros2.depth_subscriber:main',
