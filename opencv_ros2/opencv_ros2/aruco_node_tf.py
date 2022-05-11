@@ -95,13 +95,12 @@ class ArucoNodeTF(rclpy.node.Node):
         cv_image = self.bridge.imgmsg_to_cv2(img_msg, "bgr8")
         markers = ArucoMarkers()
         pose_array = PoseArray()
-        if self.camera_frame is None:
+        if self.camera_frame == '':
             markers.header.frame_id = self.info_msg.header.frame_id
             pose_array.header.frame_id = self.info_msg.header.frame_id
         else:
             markers.header.frame_id = self.camera_frame
             pose_array.header.frame_id = self.camera_frame
-            
             
         markers.header.stamp = img_msg.header.stamp
         pose_array.header.stamp = img_msg.header.stamp
@@ -110,7 +109,6 @@ class ArucoNodeTF(rclpy.node.Node):
                                                                 self.aruco_dictionary,
                                                                 parameters=self.aruco_parameters)
         if marker_ids is not None:
-
             # Draw a square around detected markers in the video frame
             cv2.aruco.drawDetectedMarkers(cv_image, corners, marker_ids)
  
@@ -126,8 +124,8 @@ class ArucoNodeTF(rclpy.node.Node):
                 # Create the coordinate transform
                 t = TransformStamped()
                 t.header.stamp = self.get_clock().now().to_msg()
-                t.header.frame_id = 'camera_depth_frame'
-                t.child_frame_id = self.aruco_marker_name
+                t.header.frame_id = markers.header.frame_id
+                t.child_frame_id = self.aruco_marker_name + str(marker_id[0])
 
                 # Store the translation (i.e. position) information
                 t.transform.translation.x = tvecs[i][0][0]
