@@ -1,10 +1,10 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
-from sensor_msgs.msg import Image # Image is the message type
+from sensor_msgs.msg import Image
 
-import cv2 # OpenCV library
-from cv_bridge import CvBridge # Package to convert between ROS and OpenCV Images
+import cv2
+from cv_bridge import CvBridge
 import numpy as np
 
 
@@ -20,26 +20,26 @@ class CannyEdgeDetection(Node):
         
         self.publisher = self.create_publisher(Image, 'edges_result', 10)
 
-        # Used to convert between ROS and OpenCV images
+        # ROSとOpenCVの画像間の変換に利用
         self.br = CvBridge()
 
     def listener_callback(self, data):
         
-        # Display the message on the console
+        # コンソールにメッセージを表示する
         #self.get_logger().info('Receiving image')
         
-        # Convert ROS Image message to OpenCV image
+        # ROS画像メッセージをOpenCV画像に変換する
         frame = self.br.imgmsg_to_cv2(data, "bgr8")
         frame_grayscale = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         
-        # Apply Canny Edge Detection
+        # Cannyエッジ検出を適用する
         edges = cv2.Canny(frame_grayscale,100,200)
 
-        # Publish the result in ROS
+        # ROSで結果をパブリッシュする
         edges_result = self.br.cv2_to_imgmsg(edges, "passthrough")
         self.publisher.publish(edges_result)
 
-        # Display image
+        # 画像を表示する
         cv2.imshow("Original Image", frame)
         cv2.imshow("Canny Edge Detection", edges)
 
@@ -52,10 +52,7 @@ def main(args=None):
     canny_edge_detection = CannyEdgeDetection()
 
     rclpy.spin(canny_edge_detection)
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
+    
     canny_edge_detection.destroy_node()
     rclpy.shutdown()
 
