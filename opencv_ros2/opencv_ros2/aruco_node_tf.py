@@ -158,7 +158,7 @@ class ArucoNodeTF(rclpy.node.Node):
             self.poses_pub.publish(pose_array)
             self.markers_pub.publish(markers)
 
-        # 表示イメージ
+        # 画像を表示する
         cv2.imshow("camera", cv_image)
         cv2.waitKey(1)
 
