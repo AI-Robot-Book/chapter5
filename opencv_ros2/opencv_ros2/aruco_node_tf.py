@@ -1,9 +1,3 @@
-"""
-
-Reference: https://github.com/JMU-ROBOTICS-VIVA/ros2_aruco/blob/main/ros2_aruco/ros2_aruco/aruco_node.py
-
-"""
-
 import rclpy
 import rclpy.node
 from rclpy.qos import qos_profile_sensor_data

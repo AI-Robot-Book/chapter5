@@ -17,7 +17,6 @@ class VideoSubscriber(Node):
             #'/camera/color/image_raw', # realsense camera topic
             self.listener_callback,
             qos_profile_sensor_data)
-        self.subscription  # prevent unused variable warning
         
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()

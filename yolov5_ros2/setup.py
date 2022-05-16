@@ -17,10 +17,10 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='jupiter',
+    maintainer='Jeffrey Tan',
     maintainer_email='i@jeffreytan.org',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    description='AI Robot - YOLOv5 ROS2',
+    license='Apache License 2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

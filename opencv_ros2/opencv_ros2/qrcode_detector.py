@@ -17,7 +17,6 @@ class QRCodeDetector(Node):
             '/image_raw',
             self.listener_callback,
             qos_profile_sensor_data)
-        self.subscription  # prevent unused variable warning
 
         self.publisher_result = self.create_publisher(Image, 'qrcode_detector_result', 10)
         self.publisher_data = self.create_publisher(String, 'qrcode_detector_data', 10)

@@ -16,7 +16,6 @@ class DepthSubscriber(Node):
             '/camera/depth/image_rect_raw', # realsense depth topic
             self.listener_callback,
             qos_profile_sensor_data)
-        self.subscription  # prevent unused variable warning
         
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()

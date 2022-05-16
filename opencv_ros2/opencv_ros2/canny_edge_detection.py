@@ -17,7 +17,6 @@ class CannyEdgeDetection(Node):
             '/image_raw',
             self.listener_callback,
             qos_profile_sensor_data)
-        self.subscription  # prevent unused variable warning
         
         self.publisher = self.create_publisher(Image, 'edges_result', 10)
 
