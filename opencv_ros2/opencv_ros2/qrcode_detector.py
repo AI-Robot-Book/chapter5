@@ -1,11 +1,12 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
+from sensor_msgs.msg import Image
 from std_msgs.msg import String
-from sensor_msgs.msg import Image # Image is the message type
 
-import cv2 # OpenCV library
-from cv_bridge import CvBridge # Package to convert between ROS and OpenCV Images
+import cv2
+from cv_bridge import CvBridge
+import numpy as np
 
 
 class QRCodeDetector(Node):
@@ -15,66 +16,46 @@ class QRCodeDetector(Node):
         self.subscription = self.create_subscription(
             Image,
             '/image_raw',
-            self.listener_callback,
+            self.image_callback,
             qos_profile_sensor_data)
 
-        self.publisher_result = self.create_publisher(Image, 'qrcode_detector_result', 10)
-        self.publisher_data = self.create_publisher(String, 'qrcode_detector_data', 10)
+        self.publisher_result = self.create_publisher(
+            Image, 
+            'qrcode_detector_result', 10)
         
-        # Used to convert between ROS and OpenCV images
+        self.publisher_data = self.create_publisher(
+            String, 
+            'qrcode_detector_data', 10)
+        
         self.br = CvBridge()
 
 
-    def listener_callback(self, data):
-        
-        # Display the message on the console
-        #self.get_logger().info('Receiving image')
-        
-        # Convert ROS Image message to OpenCV image
+    def image_callback(self, data):
         frame = self.br.imgmsg_to_cv2(data, "bgr8")
         
-        # initialize the cv2 QRCode detector
         detector = cv2.QRCodeDetector()
 
-        # detect and decode
-        qrdata, bbox, _ = detector.detectAndDecode(frame)
+        qrdata, bbox, rectImg = detector.detectAndDecode(frame)
 
-        # if there is a QR code
-        #if bbox is not None:
         if qrdata:
             print("[+] QR Code detected, data:", qrdata)
-            # display the image with lines
-            bbox = bbox[0]
-            for i in range(len(bbox)):
-                pt1 = [int(val) for val in bbox[i]]
-                pt2 = [int(val) for val in bbox[(i + 1) % len(bbox)]]
-                frame = cv2.line(frame, pt1, pt2, color=(255, 0, 0), thickness=3)
-        
-        # Publish the result in ROS
-        qrcode_detector_result = self.br.cv2_to_imgmsg(frame, "bgr8")
-        self.publisher_result.publish(qrcode_detector_result)
-        qrdata_string = String()
-        qrdata_string.data = qrdata
-        self.publisher_data.publish(qrdata_string)
-        
-        # display the result
-        cv2.imshow("Camera", frame)
-        cv2.waitKey(1)
+            qrdata_string = String()
+            qrdata_string.data = qrdata
+            self.publisher_data.publish(qrdata_string)
+
+            qrcode_rectimg = self.br.cv2_to_imgmsg(rectImg, "8UC1")
+            self.publisher_result.publish(qrcode_rectimg)
+            
+            cv2.imshow("QRCode", rectImg)
+            
+            cv2.waitKey(1)
 
 
-def main(args=None):
-    rclpy.init(args=args)
-
+def main():
+    rclpy.init()
     qrcode_detector = QRCodeDetector()
-
-    rclpy.spin(qrcode_detector)
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    qrcode_detector.destroy_node()
+    try:
+        rclpy.spin(qrcode_detector)
+    except KeyboardInterrupt:
+        pass
     rclpy.shutdown()
-
-
-if __name__ == '__main__':
-    main()
