@@ -38,7 +38,7 @@ class QRCodeDetector(Node):
         qrdata, bbox, rectImg = detector.detectAndDecode(frame)
 
         if qrdata:
-            print("[+] QR Code detected, data:", qrdata)
+            print("QR Code detected, data:", qrdata)
             qrdata_string = String()
             qrdata_string.data = qrdata
             self.publisher_data.publish(qrdata_string)
