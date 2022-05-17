@@ -13,7 +13,7 @@ class VideoSubscriber(Node):
         super().__init__('video_subscriber')
         self.subscription = self.create_subscription(
             Image,
-            'image_raw', # usb_cam topic
+            'image_raw',
             self.image_callback,
             qos_profile_sensor_data)
 
