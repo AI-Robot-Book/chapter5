@@ -41,7 +41,7 @@ class CannyEdgeDetection(Node):
 
 def main():
     rclpy.init()
-    video_subscriber = VideoSubscriber()
+    video_subscriber = CannyEdgeDetection()
     try:
         rclpy.spin(video_subscriber)
     except KeyboardInterrupt:
