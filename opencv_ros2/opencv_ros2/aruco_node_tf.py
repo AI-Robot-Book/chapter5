@@ -6,7 +6,7 @@ import numpy as np
 import cv2
 from ros2_aruco import transformations
 
-from geometry_msgs.msg import TransformStamped # Handles TransformStamped message
+from geometry_msgs.msg import TransformStamped # TransformStampedメッセージを処理する
 from tf2_ros import TransformBroadcaster
 from scipy.spatial.transform import Rotation as R
 
@@ -21,7 +21,7 @@ class ArucoNodeTF(rclpy.node.Node):
     def __init__(self):
         super().__init__('aruco_node_tf')
 
-        # Declare and read parameters
+        # パラメータの宣言と読み込み
         self.declare_parameter("marker_size", .0625)
         self.declare_parameter("aruco_dictionary_id", "DICT_5X5_250")
         self.declare_parameter("image_topic", "/image_raw")
@@ -37,7 +37,7 @@ class ArucoNodeTF(rclpy.node.Node):
         self.camera_frame = self.get_parameter("camera_frame").get_parameter_value().string_value
         self.aruco_marker_name = self.get_parameter("aruco_marker_name").get_parameter_value().string_value
 
-        # Make sure we have a valid dictionary id:
+        # 有効な辞書IDがあることを確認します
         try:
             dictionary_id = cv2.aruco.__getattribute__(dictionary_id_name)
             if type(dictionary_id) != type(cv2.aruco.DICT_5X5_100):
@@ -47,7 +47,7 @@ class ArucoNodeTF(rclpy.node.Node):
             options = "\n".join([s for s in dir(cv2.aruco) if s.startswith("DICT")])
             self.get_logger().error("valid options: {}".format(options))
 
-        # Set up subscriptions
+        # サブスクリプションの設定
         self.info_sub = self.create_subscription(CameraInfo,
                                                  info_topic,
                                                  self.info_callback,
@@ -56,14 +56,14 @@ class ArucoNodeTF(rclpy.node.Node):
         self.create_subscription(Image, image_topic,
                                  self.image_callback, qos_profile_sensor_data)
 
-        # Set up publishers
+        # パブリッシャーの設定
         self.poses_pub = self.create_publisher(PoseArray, 'aruco_poses', 10)
         self.markers_pub = self.create_publisher(ArucoMarkers, 'aruco_markers', 10)
 
-        # Initialize the transform broadcaster
+        # トランスフォームブロードキャスターの初期化
         self.tfbroadcaster = TransformBroadcaster(self)
 
-        # Set up fields for camera parameters
+        # カメラパラメーターのフィールドを設定する
         self.info_msg = None
         self.intrinsic_mat = None
         self.distortion = None
@@ -76,7 +76,7 @@ class ArucoNodeTF(rclpy.node.Node):
         self.info_msg = info_msg
         self.intrinsic_mat = np.reshape(np.array(self.info_msg.k), (3, 3))
         self.distortion = np.array(self.info_msg.d)
-        # Assume that camera parameters will remain the same...
+        # カメラのパラメータが変わらないと仮定して
         self.destroy_subscription(self.info_sub)
 
     def image_callback(self, img_msg):
@@ -85,7 +85,6 @@ class ArucoNodeTF(rclpy.node.Node):
             self.get_logger().warn("No camera info has been received!")
             return
 
-        #cv_image = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding='mono8')
         cv_image = self.bridge.imgmsg_to_cv2(img_msg, "bgr8")
         markers = ArucoMarkers()
         pose_array = PoseArray()
@@ -103,7 +102,7 @@ class ArucoNodeTF(rclpy.node.Node):
                                                                 self.aruco_dictionary,
                                                                 parameters=self.aruco_parameters)
         if marker_ids is not None:
-            # Draw a square around detected markers in the video frame
+            # ビデオフレーム内で検出されたマーカーを四角く囲む
             cv2.aruco.drawDetectedMarkers(cv_image, corners, marker_ids)
  
             if cv2.__version__ > '4.0.0':
@@ -115,13 +114,13 @@ class ArucoNodeTF(rclpy.node.Node):
                                                                    self.marker_size, self.intrinsic_mat,
                                                                    self.distortion)
             for i, marker_id in enumerate(marker_ids):
-                # Create the coordinate transform
+                # 座標変換の作成
                 t = TransformStamped()
                 t.header.stamp = self.get_clock().now().to_msg()
                 t.header.frame_id = markers.header.frame_id
                 t.child_frame_id = self.aruco_marker_name + str(marker_id[0])
 
-                # Store the translation (i.e. position) information
+                # 位置情報を格納する
                 t.transform.translation.x = tvecs[i][0][0]
                 t.transform.translation.y = tvecs[i][0][1]
                 t.transform.translation.z = tvecs[i][0][2]
@@ -135,16 +134,16 @@ class ArucoNodeTF(rclpy.node.Node):
                 rot_matrix[0:3, 0:3] = cv2.Rodrigues(np.array(rvecs[i][0]))[0]
                 quat = transformations.quaternion_from_matrix(rot_matrix)
 
-                # Quaternion format
+                # クォータニオン形式
                 t.transform.rotation.x = quat[0]
                 t.transform.rotation.y = quat[1]
                 t.transform.rotation.z = quat[2]
                 t.transform.rotation.w = quat[3]
                 
-                # Send the transform
+                # トランスフォームを送信する
                 self.tfbroadcaster.sendTransform(t)
                 
-                # Draw the axes on the marker
+                # マーカーに軸を描く
                 cv2.aruco.drawAxis(cv_image, self.intrinsic_mat, self.distortion, rvecs[i], tvecs[i], 0.05)
 
                 pose.orientation.x = quat[0]
@@ -159,7 +158,7 @@ class ArucoNodeTF(rclpy.node.Node):
             self.poses_pub.publish(pose_array)
             self.markers_pub.publish(markers)
 
-        # Display image
+        # 画像を表示する
         cv2.imshow("camera", cv_image)
         cv2.waitKey(1)
 
