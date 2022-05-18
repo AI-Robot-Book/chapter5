@@ -7,10 +7,10 @@ import cv2
 from cv_bridge import CvBridge
 
 
-class VideoSubscriber(Node):
+class ImgProcOpenCVROS(Node):
 
     def __init__(self):
-        super().__init__('video_subscriber')
+        super().__init__('imgproc_opencv_ros')
         self.subscription = self.create_subscription(
             Image,
             'image_raw',
@@ -33,9 +33,9 @@ class VideoSubscriber(Node):
 
 def main():
     rclpy.init()
-    video_subscriber = VideoSubscriber()
+    imgproc_opencv_ros = ImgProcOpenCVROS()
     try:
-        rclpy.spin(video_subscriber)
+        rclpy.spin(imgproc_opencv_ros)
     except KeyboardInterrupt:
         pass
     rclpy.shutdown()
