@@ -24,8 +24,8 @@ class ImgProcOpenCVROS(Node):
         self.br = CvBridge()
 
     def image_callback(self, data):
-        frame = self.br.imgmsg_to_cv2(data, "bgr8")
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        source = self.br.imgmsg_to_cv2(data, 'bgr8')
+        gray = cv2.cvtColor(source, cv2.COLOR_BGR2GRAY)
         _, result = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
         result_msg = self.br.cv2_to_imgmsg(result, 'passthrough')
         self.publisher.publish(result_msg)
