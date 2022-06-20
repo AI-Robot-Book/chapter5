@@ -29,6 +29,7 @@ class ImgProcOpenCVROS(Node):
         _, result = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
         result_msg = self.br.cv2_to_imgmsg(result, 'passthrough')
         self.publisher.publish(result_msg)
+        self.get_logger().info('Publishing image')
 
 
 def main():
