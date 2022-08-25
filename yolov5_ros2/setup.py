@@ -6,7 +6,7 @@ package_name = 'yolov5_ros2'
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version='1.0.0',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -17,9 +17,9 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='Jeffrey Tan',
-    maintainer_email='i@jeffreytan.org',
-    description='AI Robot - YOLOv5 ROS2',
+    maintainer='Jeffrey Too Chuan TAN',
+    maintainer_email='ai-robot-book@googlegroups.com',
+    description='YOLOv5 applications with ROS 2',
     license='Apache License 2.0',
     tests_require=['pytest'],
     entry_points={
