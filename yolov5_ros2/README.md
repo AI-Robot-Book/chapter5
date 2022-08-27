@@ -71,7 +71,7 @@
 
 ## 著者
 
-タン　ジェフリー　トゥ　チュアン TAN Jeffrey Too Chuan
+タン ジェフリー トゥ チュアン　TAN Jeffrey Too Chuan
 
 ## 履歴
 
