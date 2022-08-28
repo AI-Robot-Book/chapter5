@@ -81,7 +81,7 @@
 
 Copyright (c) 2022, TAN Jeffrey Too Chuan  
 All rights reserved.  
-This source code is licensed under the Apache License 2.0 found in the LICENSE file in the root directory of this project.
+This project is licensed under the Apache License 2.0 found in the LICENSE file in the root directory of this project.
 
 ## 参考文献
 
