@@ -12,7 +12,7 @@
 - YOLOv5ソフトウェアをインストール
   ```
   cd ˜/airobot_ws/
-  git clone https://github.com/ultralytics/yolov5
+  git clone -bv6.2 https://github.com/ultralytics/yolov5
   cd yolov5
   pip3 install -r requirements.txt
   ```
@@ -51,18 +51,18 @@
   ```
   ros2 run yolov5_ros2 object_detection_srv
   ```
-- 端末3：ROSサービスを呼び出し（対象物体’cup’）
+- 端末3：ROSサービスを呼び出し（対象物体'cup'）
   - 対象物体を探す
     ```
-    ros2 service call /vision/command airobot_interfaces/srv/StringCommand "{command: ’find cup’}"
+    ros2 service call /vision/command airobot_interfaces/srv/StringCommand "{command: 'find cup'}"
     ```
   - 対象物体を連続的に追跡
     ```
-    ros2 service call /vision/command airobot_interfaces/srv/StringCommand "{command: ’track cup’}"
+    ros2 service call /vision/command airobot_interfaces/srv/StringCommand "{command: 'track cup'}"
     ```
   - 物体検出の処理を停止
     ```
-    ros2 service call /vision/command airobot_interfaces/srv/StringCommand "{command: ’stop’}"
+    ros2 service call /vision/command airobot_interfaces/srv/StringCommand "{command: 'stop'}"
     ```
 
 ## ヘルプ
