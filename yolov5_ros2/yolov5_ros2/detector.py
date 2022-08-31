@@ -90,7 +90,7 @@ class Detector:
             self.model.model.half() if self.half else self.model.model.float()
 
         # Dataloader
-        self.view_img = check_imshow()
+        self.view_img = True  # check_imshow()
         # set True to speed up constant image size inference
         cudnn.benchmark = True
         self.model.warmup(imgsz=(1, 3, *imgsz))  # warmup
