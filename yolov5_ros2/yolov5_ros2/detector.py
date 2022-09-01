@@ -7,9 +7,16 @@ import torch
 import torch.backends.cudnn as cudnn
 import numpy as np
 
-FILE = Path(__file__).resolve()
+from ament_index_python.packages import get_package_prefix
+
+# 親ディレクトリ名がパッケージ名と仮定
+package = str(Path(__file__).resolve().parent.name)
+print('package:', package)
+# インストールディレクトリの親の親がワークスペースと仮定
+workspace = Path(get_package_prefix(package)).parents[1]
+print('workspace:', workspace)
 # ワークスペースの直下にディレクトリyolov5があることを仮定
-ROOT = FILE.parents[6] / 'yolov5'
+ROOT = workspace / 'yolov5'
 print('ROOT:', ROOT)
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
