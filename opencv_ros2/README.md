@@ -185,7 +185,7 @@
 
 - このサンプルプログラムは，Ubuntu上でしか動作が確認できていません．Windowsで開発されている方は，VirtualBox、VMwareなどのバーチャルマシンにUbuntuをインストールしてサンプルプログラムを実行する事ができます．
 
-- aruco_node_tfを実行の時，下記のエラーが発生
+- Pythonのopencv-contrib-pythonパッケージのバージョンを指定せず最新版をインストールした場合は，aruco_node_tfノードの実行時に以下のようなエラーが発生することを確認しています．
  ```
  AttributeError: module 'cv2' has no attribute 'aruco'
  ```
@@ -193,7 +193,7 @@
  ```
  AttributeError: module 'cv2.aruco' has no attribute 'drawAxis'
  ```
- 対策：
+ これを回避するために，以下のコマンドを実行してください．
  ```
  $ pip3 uninstall opencv-python
  $ pip3 uninstall opencv-contrib-python
