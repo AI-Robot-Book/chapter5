@@ -214,5 +214,5 @@ This project is licensed under the Apache License 2.0 found in the LICENSE file 
  ```
  $ pip3 uninstall opencv-python
  $ pip3 uninstall opencv-contrib-python
- $ pip3 uninstall opencv-contrib-python==4.5.5.64
+ $ pip3 install opencv-contrib-python==4.5.5.64
  ```
