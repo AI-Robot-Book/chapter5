@@ -185,6 +185,21 @@
 
 - このサンプルプログラムは，Ubuntu上でしか動作が確認できていません．Windowsで開発されている方は，VirtualBox、VMwareなどのバーチャルマシンにUbuntuをインストールしてサンプルプログラムを実行する事ができます．
 
+- aruco_node_tfを実行の時，下記のエラーが発生
+ ```
+ AttributeError: module 'cv2' has no attribute 'aruco'
+ ```
+ または
+ ```
+ AttributeError: module 'cv2.aruco' has no attribute 'drawAxis'
+ ```
+ 対策：
+ ```
+ $ pip3 uninstall opencv-python
+ $ pip3 uninstall opencv-contrib-python
+ $ pip3 install opencv-contrib-python==4.5.5.64
+ ```
+
 ## 著者
 
 タン ジェフリー トゥ チュアン　TAN Jeffrey Too Chuan
@@ -203,20 +218,3 @@ This project is licensed under the Apache License 2.0 found in the LICENSE file 
 
 - https://opencv.org/
 - https://github.com/JMU-ROBOTICS-VIVA/ros2_aruco
-
-## 補足情報
-
-- aruco_node_tfを実行の時，下記のエラーが発生
- ```
- AttributeError: module 'cv2' has no attribute 'aruco'
- ```
- または
- ```
- AttributeError: module 'cv2.aruco' has no attribute 'drawAxis'
- ```
- 対策：
- ```
- $ pip3 uninstall opencv-python
- $ pip3 uninstall opencv-contrib-python
- $ pip3 install opencv-contrib-python==4.5.5.64
- ```
