@@ -17,10 +17,10 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 - 実行するUbuntuの環境でカメラからの入力が出来ていることを事前に確認してください．
 
 - カメラを起動の時，下記のエラーが発生
- '''
+ ```
 　Cannot open '/dev/video0': 13, Permission denied
- '''
+ ```
 　対策：
- '''
+ ```
  $ sudo chmod 666 /dev/video0
- '''
+ ```
