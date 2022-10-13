@@ -9,7 +9,7 @@
 
 - OpenCV関連のパッケージをインストール
   ```
-  pip3 install opencv-contrib-python
+  pip3 install opencv-contrib-python==4.5.5.64
   ```
 
 - ROS2とOpenCVのインタフェースとなるパッケージをインストール
