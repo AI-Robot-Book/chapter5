@@ -203,3 +203,16 @@ This project is licensed under the Apache License 2.0 found in the LICENSE file 
 
 - https://opencv.org/
 - https://github.com/JMU-ROBOTICS-VIVA/ros2_aruco
+
+## 補足情報
+
+- aruco_node_tfを起動の時，下記のエラーが発生
+ ```
+ AttributeError: module 'cv2' has no attribute 'aruco'
+ ```
+ 対策：
+ ```
+ $ pip3 uninstall opencv-python
+ $ pip3 uninstall opencv-contrib-python
+ $ pip3 uninstall opencv-python==4.5.5.64
+ ```
