@@ -12,7 +12,7 @@
 - YOLOv5ソフトウェアをインストール
   ```
   cd ˜/airobot_ws/
-  git clone -bv6.2 https://github.com/ultralytics/yolov5
+  git clone -b v6.2 https://github.com/ultralytics/yolov5
   cd yolov5
   pip3 install -r requirements.txt
   ```
