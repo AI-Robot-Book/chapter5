@@ -63,7 +63,7 @@
 5.3.1節：OpenCVによる画像処理
 - プログラムを実行
   ```
-  python3 ˜/airobot_ws/src/chapter5/opencv_ros2/opencv_ros2/imgproc_opencv.py
+  python3 ~/airobot_ws/src/chapter5/opencv_ros2/opencv_ros2/imgproc_opencv.py
   ```
 - 結果を確認
 
