@@ -7,7 +7,7 @@
 
 ## インストール
 
-- [opencv_ros2](opencv_ros2)のインストール作業
+- [opencv_ros2](../opencv_ros2/README.md)のインストール作業
 
 - YOLOv5ソフトウェアをインストール
   ```
