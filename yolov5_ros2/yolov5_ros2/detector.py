@@ -19,7 +19,7 @@ print('workspace:', workspace)
 ROOT = workspace / 'yolov5'
 print('ROOT:', ROOT)
 if str(ROOT) not in sys.path:
-    sys.path.append(str(ROOT))  # add ROOT to PATH
+    sys.path.insert(0, str(ROOT))  # add ROOT to PATH
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 # ファイルの先頭でimportしていないのでFlake8に怒られる（E402）
