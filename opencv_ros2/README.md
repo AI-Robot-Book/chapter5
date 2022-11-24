@@ -9,7 +9,7 @@
 
 - OpenCV関連のパッケージをインストール
   ```
-  pip3 install opencv-contrib-python
+  pip3 install opencv-contrib-python==4.5.5.64
   ```
 
 - ROS2とOpenCVのインタフェースとなるパッケージをインストール
@@ -63,7 +63,7 @@
 5.3.1節：OpenCVによる画像処理
 - プログラムを実行
   ```
-  python3 ˜/airobot_ws/src/chapter5/opencv_ros2/opencv_ros2/imgproc_opencv.py
+  python3 ~/airobot_ws/src/chapter5/opencv_ros2/opencv_ros2/imgproc_opencv.py
   ```
 - 結果を確認
 
@@ -184,6 +184,21 @@
 ## ヘルプ
 
 - このサンプルプログラムは，Ubuntu上でしか動作が確認できていません．Windowsで開発されている方は，VirtualBox、VMwareなどのバーチャルマシンにUbuntuをインストールしてサンプルプログラムを実行する事ができます．
+
+- Pythonのopencv-contrib-pythonパッケージのバージョンを指定せず最新版をインストールした場合は，aruco_node_tfノードの実行時に以下のようなエラーが発生することを確認しています．
+  ```
+  AttributeError: module 'cv2' has no attribute 'aruco'
+  ```
+  または
+  ```
+  AttributeError: module 'cv2.aruco' has no attribute 'drawAxis'
+  ```
+  これを回避するために，以下のコマンドを実行してください．
+  ```
+  pip3 uninstall opencv-python
+  pip3 uninstall opencv-contrib-python
+  pip3 install opencv-contrib-python==4.5.5.64
+  ```
 
 ## 著者
 
